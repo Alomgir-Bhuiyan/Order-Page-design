@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>order</title>
+  <style type="text/css" media="all">
+    @font-face {
+      font-family: sgf;
+      src: url(./fonts/SportingGrotesque-Regular.otf);
+    }
+    
+    *{
+      margin: 0;
+      padding: 0;
+      font-family: sgf;
+    }
+    body {
+      background-color: #00282b;
+    }
+    .order {
+      background-color: #f9f5f5;
+      padding: 25px 10px;
+      height: min-content;
+      width: 80vw;
+      border-radius: 12px;
+      margin: 2vh auto;
+      
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+    }
+    
+    .order .info {
+      font-weight: 700;
+      font-size: 1rem;
+      text-transform: capitalize;
+      display: grid; 
+      grid-template-columns: repeat(2, min-content);
+      grid-template-rows: 4;
+      justify-content: space-between;
+      row-gap: 25px;
+    }
+    .order-btn {
+      text-align: center;
+      background-color: limegreen; 
+      width: 95%;
+      margin: auto; 
+      padding: 10px 0;
+      border-radius: 8px; 
+      
+      & a {
+        color: white; 
+        text-decoration: none;
+      }
+    }
+    
+    .billing-address form label {
+      font-size: 1rem;
+    }
+    .billing-address form input {
+      outline: none;
+    }
+    .billing-address form input{
+      padding: 10px;
+      width: 90%;
+      margin: auto;
+      margin: 0 0 15px 0;
+      border: 1.2px dashed black;
+      border-radius: 5px;
+    }
+    .in-one-row {
+      display: grid;
+      grid-template-columns: repeat(2,1fr);
+      gap: 10%;
+      justify-content: space-around;
+    }
+    .por-2 {
+      width: 87%;
+      
+      & label {
+        white-space: nowrap;
+      }
+    }
+    .billing-address form select {
+      padding: 10px;
+      border: 1.2px solid grey;
+      border-radius: 5px;
+      outline: none;
+      background-color: transparent;
+    }
+    .billing-address form input:valid {
+      outline-color: #58e64d;
+      outline-style: dashed;
+      outline-width: 2px;
+      border: none;
+      color: #32d725;
+    }
+    .billing-address form input:invalid{
+      color: red;
+    }
+    .order > h3 {
+      margin: 0;
+      padding: 0;
+    }
+    #bkash:checked ~ .gateway-payment,
+    #nagad:checked ~ .gateway-payment,
+    #rocket:checked ~ .gateway-payment{
+      display: block;
+    }
+    .gateway-payment{
+      display: none;
+      font-size: 0.8rem;
+      box-sizing: border-box; 
+      background-color: white;
+      padding: 10px;
+      border-radius: 5px;
+      position: relative;
+      margin-top: 10px;
+      z-index: 10;
+      grid-column: 1 / span 3;
+      transition: all 1s linear;
+      
+      &::before {
+        content: '';
+        height: 30px; 
+        width: 30px; 
+        background-color: white;
+        position: absolute;
+        top: -10px;
+        left: 40px;
+        transform: rotateZ(45deg);
+        z-index: -5;
+      }
+    }
+    .bkash-payment > p {
+      color: green;
+    }
+    .gateway-payment > p:first-of-type ~ * {
+      margin: 20px 0;
+    }
+    .gateway-payment span {
+      color: green;
+      font-weight: bold;
+    }
+    .gateway-logo {
+      width: 80px;
+      aspect-ratio: 2/1;
+      transform: translateY(-5px);
+    }
+    .gateway-name {
+      display: grid;
+      grid-template-columns: 10% 60% 30%;
+      grid-template-rows: repeat(2,min-content);
+      justify-content: space-between;
+      align-items: center;
+      margin: 10px 0;
+    }
+    .gateway-varify {
+      display: flex;
+      flex-direction: column;
+      
+      & input {
+        margin: 0 !important;
+        padding: 10px;
+        outline: none;
+        border: 1.2px dashed black;
+        border-radius: 5px;
+      }
+    }
+    .delivery-charge {
+      font-size: 0.9rem;
+      display: grid;
+      grid-template-columns: 8% 90%;
+      grid-template-rows: repeat(3,min-content);
+      gap: 15px;
+      align-items: start;
+      
+      & input {
+        padding: 0px !important;
+        accent-color: limegreen;
+      }
+      
+      & span {
+        color: #f9ca2d;
+      }
+      & input:disabled + label {
+        opacity: 0.5;
+      }
+    }
+    
+    label[for='name'],
+    label[for='email'],
+    label[for='postcode'],
+    label[for='city'],
+    label[for='address']
+    {
+      position: relative;
+      
+      &::after {
+        position: absolute;
+        top: 2px;
+        right: -8px;
+        content: '';
+        height: 5.5px;
+        width: 5.5px;
+        background-color: red;
+        border-radius: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+    <div class="order">
+      <h1>Order</h1>
+      <h3>Billing Information</h3>
+      <div class="billing-address">
+        <form class=".billing" action="" method="get" accept-charset="utf-8">
+          <label for="name">Name</label><br/>
+          <input type="text" name="name" id="name" placeholder="Your name" required/>
+          <br>
+          <label for="email">Email</label><br>
+          <input type="email" name="email" id="email" placeholder="example@example.com" required/>
+          <br>
+          <div class="in-one-row">
+            <div class="por-1">
+              <label for="country">Country</label><br />
+              <select name="country" id="country">
+                <option value="Bangladesh">Bangladesh</option>
+                <option value="Pakistan">Pakistan</option>
+                <option value="Sri Lanka">Sri Lanka</option>
+                <option value="Bhutan">Bhutan</option>
+                <option value="Italy">Italy</option>
+                <option value="Japan">Japan</option>
+              </select>
+            </div>
+            <div class="por-2">
+              <label for="postcode">Postal Code</label><br>
+              <input type="number" name="postcode" id="postcode" placeholder="POST CODE" required/><br>
+            </div>
+              
+          </div>
+          
+          <label for="city">City</label><br>
+          <input type="text" name="city" id="city" placeholder="City" required/><br>
+          
+          <label for="address">Address</label><br>
+          <input type="text" name="address" id="address" placeholder="Address" required/>
+        </form>
+      </div>
+      <hr style="width:95%; margin:auto; border-top: 0; border-color: rgba(0,0,0,0.5);">
+      <div class="info">
+        <p>Item (1)</p>
+        
+        <p>$20.4</p>
+        
+        <p>Shipping fes</p>
+        
+        <p>$4.8</p>
+        <p>Vat</p><p>$2.9</p>
+      </div>
+      
+      <h3>Delivery Charge</h3> 
+      <div class="delivery-charge">
+        <input type="radio" name="delivery" id="free" disabled>
+        <label for="free"> FREE Delivery <br><span>(Estimated delivery in 14 working days)</span></label>
+          
+        <input type="radio" name="delivery" id="medium" checked>
+        <label for="medium"><span style="color: green; font-weight: bolder;">($ 2 USD)</span> Fast Delivery <br><span>(Estimated delivery in 72 hour)</span></label>
+        
+        <input type="radio" name="delivery" id="fast">
+        <label for="fast"><span style="color: green; font-weight: bolder;">($ 5 USD)</span> Super Fast Delivery <br><span>(Estimated delivery in 24 hour)</span></label>
+      </div>
+      
+      <div class="info">
+        
+        <p>Total</p>
+        
+        <p>$28.1</p>
+      </div>
+          
+      <hr style="width:95%; margin:auto; border-top: 0; border-color: rgba(0,0,0,0.5);">
+      <h3>Payment Gateway</h3>
+      
+      <div class="payment-gateway">
+        
+        <div class="gateway-name">
+          
+          <input type="radio" name="payment-gateway" id="bkash" checked required/>
+          
+          <label for="bkash">Pay with bKash</label>
+          <img class="gateway-logo" src="./assets/images/bkash.png" alt="" />
+          <div class="gateway-payment">
+            <p>You need to send us $ 28.1</p>
+            <h4>Account Type: <span>bKash Personal</span></h4>
+            <h4>Account Number: <span>01406147294</span></h4>
+            <hr style="width:95%; margin:auto; border-top: 0; border-color: rgba(0,0,0,0.5);">
+            
+            <div class="gateway-varify">
+              <label for="acc-num">Your bKash Account Number</label><br>
+              <input type="number" name="acc-num" id="acc-num" placeholder="01XXXXXXXXX" /><br>
+                
+              <label for="trx-id">Your bKash Transition ID</label><br>
+              <input type="text" name="trx-id" id="trx-id" placeholder="29GSOY58HJ" /><br>
+            </div>
+              
+          </div>
+        </div>
+        <div class="gateway-name">
+          
+          <input type="radio" name="payment-gateway" id="nagad" required/>
+          
+          <label for="nagad">Pay with Nagad</label>
+          <img class="gateway-logo" src="./assets/images/nagad.png" alt="nagad" />
+          <div class="gateway-payment">
+            <p>You need to send us $ 28.1</p>
+            <h4>Account Type: <span>Nagad Personal</span></h4>
+            <h4>Account Number: <span>01406147294</span></h4>
+            <hr style="width:95%; margin:auto; border-top: 0; border-color: rgba(0,0,0,0.5);">
+            
+            <div class="gateway-varify">
+              <label for="acc-num">Your Nagad Account Number</label><br>
+              <input type="number" name="acc-num" id="acc-num" placeholder="01XXXXXXXXX" /><br>
+                
+              <label for="trx-id">Your Nagad Transition ID</label><br>
+              <input type="text" name="trx-id" id="trx-id" placeholder="29GSOY58HJ" /><br>
+            </div>
+              
+          </div>
+        </div>
+        <div class="gateway-name">
+          
+          <input type="radio" name="payment-gateway" id="rocket" required/>
+          
+          <label for="rocket">Pay with Rocket</label>
+          <img class="gateway-logo" src="./assets/images/rocket.png" alt="rocket" />
+          <div class="gateway-payment">
+            <p>You need to send us $ 28.1</p>
+            <h4>Account Type: <span>Rocket Personal</span></h4>
+            <h4>Account Number: <span>01406147294</span></h4>
+            <hr style="width:95%; margin:auto; border-top: 0; border-color: rgba(0,0,0,0.5);">
+            
+            <div class="gateway-varify">
+              <label for="acc-num">Your Rocket Account Number</label><br>
+              <input type="number" name="acc-num" id="acc-num" placeholder="01XXXXXXXXX" /><br>
+                
+              <label for="trx-id">Your Rocket Transition ID</label><br>
+              <input type="text" name="trx-id" id="trx-id" placeholder="29GSOY58HJ" /><br>
+            </div>
+              
+          </div>
+        </div>
+  
+        
+      </div>
+      
+      <div class="order-btn">
+        <a href="#">Place Order</a>
+      </div>
+    </div>
+</body>
+</html>
